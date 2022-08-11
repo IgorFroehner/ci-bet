@@ -13,8 +13,16 @@ services:
 #    command: bash -c "rails s -b 0.0.0.0"
 #    restart: unless-stopped
 
+  db:
+    image: postgres:alpine
+    environment:
+      POSTGRES_HOST_AUTH_METHOD: trust
+      POSTGRES_USER: '${USER}'
+    ports:
+      - "5432:5432"
+
   redis:
     image: redis:4.0.14
     command: redis-server
     ports:
-      - 6379:6379
+      - "6379:6379"

@@ -1,0 +1,2 @@
+class BettingGame < ApplicationRecord
+end
