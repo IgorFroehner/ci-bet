@@ -35,6 +35,8 @@ module SlackRailsBotStarter
     config.api_only = true
     config.hosts << ENV.fetch('RAILS_HOST_NAME')
     config.middleware.use Rack::ServerPages
+    
+    config.hosts << /[a-z0-9-]+\.ngrok\.io/
     # Set the log level for mongoid so that it doesn't send trivial messages to stdout.
     config.mongoid.logger.level = Logger::INFO
   end
