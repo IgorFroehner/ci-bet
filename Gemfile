@@ -44,3 +44,5 @@ end
 gem 'kaminari-mongoid'
 gem 'mongoid-scroll'
 gem 'slack-ruby-bot-server-events'
+gem 'sidekiq'
+gem 'sidekiq-cron'

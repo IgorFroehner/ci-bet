@@ -2,13 +2,19 @@ version: "3.9"
 
 services:
 
-  rails_api:
-    container_name: rails_api
-    build: .
-    volumes:
-      - "./:/app/"
-      - "./log:/app/log"
+#  rails_api:
+#    container_name: rails_api
+#    build: .
+#    volumes:
+#      - "./:/app/"
+#      - "./log:/app/log"
+#    ports:
+#      - "3000:3000"
+#    command: bash -c "rails s -b 0.0.0.0"
+#    restart: unless-stopped
+
+  redis:
+    image: redis:4.0.14
+    command: redis-server
     ports:
-      - "3000:3000"
-    command: bash -c "rails s -b 0.0.0.0"
-    restart: unless-stopped
+      - 6379:6379
