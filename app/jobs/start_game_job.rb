@@ -3,6 +3,10 @@ class StartGameJob < ActiveJob::Base
     return if Game.any_game_active?
 
     pipeline = PipelineService.get_latest
+    return if Game.where(pipeline_id: pipeline['id']).exists?
+
+    status = PipelineService.get_status(pipeline['id'])
+    return if status != 'running'
 
     Game.create(pipeline: pipeline)
 
