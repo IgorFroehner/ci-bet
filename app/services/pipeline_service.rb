@@ -2,38 +2,30 @@
 
 class PipelineService
   class << self
-    def get_all_pipelines
-      url = URI("#{CIRCLE_API_URL}/project/#{PROJECT_SLUG}/pipeline")
-      send_request(url)
-    end
-
-    def get_latest_pipeline
-      get_all_pipelines['items'].first
-    end
-
-    def get_pipeline_by_number(pipeline_number)
-      url = URI("#{CIRCLE_API_URL}/project/#{PROJECT_SLUG}/pipeline/#{pipeline_number}")
-      send_request(url)
-    end
-
-    private
-
     CIRCLE_API_URL = 'https://circleci.com/api/v2'
     PROJECT_SLUG = 'gh/trusted/trusted-api'
 
-    CIRCLE_TOKEN = ENV.fetch('CIRCLE_CI_API_TOKEN')
+    def get_all
+      url = URI("#{CIRCLE_API_URL}/project/#{PROJECT_SLUG}/pipeline")
+      CircleCiService.send_request(url)
+    end
 
-    def send_request(url)
-      http = Net::HTTP.new(url.host, url.port)
-      http.use_ssl = true
-      http.verify_mode = OpenSSL::SSL::VERIFY_NONE
+    def get_latest
+      get_all['items'].first
+    end
 
-      request = Net::HTTP::Get.new(url)
-      request['Circle-Token'] = CIRCLE_TOKEN
-      request['Accept'] = 'text/plain'
+    def get_by_id(pipeline_id)
+      url = URI("#{CIRCLE_API_URL}/pipeline/#{pipeline_id}")
+      CircleCiService.send_request(url)
+    end
 
-      response = http.request(request)
-      JSON.parse(response.read_body)
+    def get_workflow(pipeline_id)
+      url = URI("#{CIRCLE_API_URL}/pipeline/#{pipeline_id}/workflow")
+      CircleCiService.send_request(url)
+    end
+
+    def get_status(pipeline_id)
+      get_workflow(pipeline_id)['items'][0]['status']
     end
   end
 end

@@ -1,5 +1,10 @@
 
-start_pool_job:
+start_game_job:
   cron: "* * * * *"
   class: "StartGameJob"
+  queue: "ci_bet"
+
+end_game_job:
+  cron: "* * * * *"
+  class: "EndGameJob"
   queue: "ci_bet"

@@ -2,9 +2,9 @@ class StartGameJob < ActiveJob::Base
   def perform
     return if Game.any_game_active?
 
-    pipeline = PipelineService.get_latest_pipeline
+    pipeline = PipelineService.get_latest
 
-    game = Game.create(pipeline: pipeline)
+    Game.create(pipeline: pipeline)
 
     team = Team.find_by(team_id: ENV['TEAM_ID'])
     slack_client = Slack::Web::Client.new(token: team.token)
@@ -16,5 +16,7 @@ class StartGameJob < ActiveJob::Base
           run by: #{pipeline['trigger']['actor']['login']}
           started running: #{pipeline['trigger']['received_at']}
           commit message: #{pipeline['vcs']['commit']['subject']}")
+
+    Rails.logger.info("StartGameJob: pipeline #{pipeline}")
   end
 end
