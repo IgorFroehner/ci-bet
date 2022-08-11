@@ -28,10 +28,24 @@ SlackRubyBotServer::Events.configure do |config|
             if user.balance < amount
               { text: "You don't have enough balance to bet #{amount}. Your current balance is: #{user.balance}" }
             else
+              if Game.any_game_active?
+                game = Game.where(active: true).first
 
-              # TODO: here is the betting part
+                game.entries << {
+                  "user_id": user.user_id,
+                  "bet": bet,
+                  "amount": amount
+                }
+                game.save
 
-              { text: "You bet #{amount} for #{bet}. Your current balance is: #{user.balance}" }
+                user.update(balance: user.balance - amount)
+
+                { text: "You bet #{amount} for #{bet}.
+     The pipeline was: #{game.pipeline['vcs']['branch']}\n
+     Your current balance is: #{user.balance}" }
+              else
+                { text: "There is no active game, soon you will have the next." }
+              end
             end
           else
             { text: "You're not signed in. Please sign in with /sign_in." }

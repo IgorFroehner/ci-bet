@@ -16,7 +16,5 @@ class StartGameJob < ActiveJob::Base
           runned by: #{pipeline['trigger']['actor']['login']}
           started running: #{pipeline['trigger']['received_at']}
           commit message: #{pipeline['vcs']['commit']['subject']}")
-
-    game.update(active: false)
   end
 end
