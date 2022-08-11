@@ -237,3 +237,6 @@ fabric.properties
 .idea/**/azureSettings.xml
 
 # End of https://www.toptal.com/developers/gitignore/api/ruby,rails,rubymine
+
+# Development files
+scratch.rb
