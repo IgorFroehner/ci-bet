@@ -13,7 +13,7 @@ class StartGameJob < ActiveJob::Base
       channel: ENV['CHANNEL_ID'],
       text: "Game started. The current pipeline is:
           branch name: #{pipeline['vcs']['branch']}
-          runned by: #{pipeline['trigger']['actor']['login']}
+          run by: #{pipeline['trigger']['actor']['login']}
           started running: #{pipeline['trigger']['received_at']}
           commit message: #{pipeline['vcs']['commit']['subject']}")
   end
