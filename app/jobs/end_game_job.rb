@@ -9,7 +9,7 @@ class EndGameJob < ActiveJob::Base
 
     return if status == 'running'
 
-    game.update(active: false)
+    game.end_game(status == 'success')
 
     team = Team.find_by(team_id: ENV['TEAM_ID'])
     slack_client = Slack::Web::Client.new(token: team.token)

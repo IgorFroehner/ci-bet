@@ -10,4 +10,9 @@ class User
     self.balance -= amount
     self.save
   end
+
+  def credit_balance(amount)
+    self.balance += amount
+    self.save
+  end
 end
