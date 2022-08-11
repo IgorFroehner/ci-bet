@@ -1,5 +1,5 @@
 
 start_pool_job:
   cron: "* * * * *"
-  class: "StartPoolJob"
-  queue: "default"
+  class: "StartGameJob"
+  queue: "ci_bet"
