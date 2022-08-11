@@ -31,14 +31,9 @@ SlackRubyBotServer::Events.configure do |config|
               if Game.any_game_active?
                 game = Game.where(active: true).first
 
-                game.entries << {
-                  "user_id": user.user_id,
-                  "bet": bet,
-                  "amount": amount
-                }
-                game.save
+                game.add_entry(user.user_id, bet, amount)
 
-                user.update(balance: user.balance - amount)
+                user.debit_balance(amount)
 
                 { text: "You bet #{amount} for #{bet}.
      The pipeline was: #{game.pipeline['vcs']['branch']}\n
