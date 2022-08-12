@@ -1,4 +1,11 @@
-# Slack Rails Bot Starter
+# CI Bet
+
+<p align="center">
+  <img src="ci-bet-icon.jpg" alt="CI Bet Icon" width="200" />
+</p>
+
+A casino of circle CI. It's a slack bot where you can bet on circle CI workflows. When a college push a commit it can 
+start a game. People then can bet on the outcome of the CI of the game, if it will fail or succeed.
 
 ## Setup
 
@@ -36,14 +43,6 @@ cp .env.example .env
 ```
 Go to https://api.slack.com/apps and click your application.  
 Grab the infomation needed for .env file from **Basic Information** section.
-
-## Run the application
-
-Use this command to run the app on your server:
-```bash
-rails s -e production -b 0.0.0.0
-```
-Open the **BASE_URL** in your browser
 
 ## Deployment
 
