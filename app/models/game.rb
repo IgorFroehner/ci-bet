@@ -20,34 +20,18 @@ class Game
   end
 
   def end_game(status)
-    return unless self.active
+    winners = entries.filter { |entry| status ? entry['bet'] == 'S' : entry['bet'] == 'F' }
+    winner_pool = winners.pluck(:amount).sum
 
-    self.active = false
-
-    unless self.entries.empty?
-      total_prize_success = 0
-      total_prize_failure = 0
-      self.entries.each do |entry|
-        total_prize_success += entry["amount"] if entry["bet"] == "S"
-        total_prize_failure += entry["amount"] if entry["bet"] == "F"
-      end
-
-      self.entries.each do |entry|
-        user = User.find_by(user_id: entry['user_id'])
-
-        if status
-          final_balance = self.total_amount * (entry['amount'] / total_prize_success)
-
-          user.credit_balance(final_balance) if entry["bet"] == "S"
-        else
-          final_balance = self.total_amount * (entry['amount'] / total_prize_failure)
-
-          user.credit_balance(final_balance) if entry["bet"] == "F"
-        end
-      end
+    winners = winners.map do |entry|
+      user = User.find_by(user_id: entry['user_id'])
+      final_balance = total_amount * (1.0 * entry['amount'] / winner_pool)
+      user.credit_balance(final_balance)
+      [entry, final_balance]
     end
 
     self.save
+    winners
   end
 
   def self.any_game_active?
