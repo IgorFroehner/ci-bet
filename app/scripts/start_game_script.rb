@@ -8,7 +8,7 @@ class StartGameScript
     while true
       if Game.any_game_active?
         logger.info("A game is already active, waiting for it to finish")
-        sleep(10)
+        sleep(30.minute)
         next
       end
 
@@ -27,7 +27,7 @@ class StartGameScript
 
       logger.info("StartGameJob: pipeline #{pipeline}")
 
-      sleep(10)
+      sleep(30.minute)
     end
   end
 
