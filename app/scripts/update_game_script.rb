@@ -38,6 +38,10 @@ class UpdateGameScript
     success_odd = (1.0 * game.total_amount / success_pool).round(2)
     success_odd = 1.0 if success_pool == 0
 
+    commit = pipeline['vcs']
+    commit = commit['commit'] if commit
+    commit = commit['subject'] if commit
+
     [
       {
         "type": "header",
@@ -50,7 +54,7 @@ class UpdateGameScript
         "type": "section",
         "text": {
           "type": "mrkdwn",
-          "text": "*Commit:* #{pipeline['vcs']['commit']['subject']}\n*Branch:* #{pipeline['vcs']['branch']}\n*By:* #{pipeline['trigger']['actor']['login']}\n*Started at:* #{pipeline['trigger']['received_at']}\n"
+          "text": "*Commit:* #{commit}\n*Branch:* #{pipeline['vcs']['branch']}\n*By:* #{pipeline['trigger']['actor']['login']}\n*Started at:* #{pipeline['trigger']['received_at']}\n"
         },
         "accessory": {
           "type": "image",

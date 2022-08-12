@@ -7,6 +7,7 @@ class StartGameScript
 
     while true
       if Game.any_game_active?
+        logger.info("A game is already active, waiting for it to finish")
         sleep(10)
         next
       end
@@ -31,6 +32,10 @@ class StartGameScript
   end
 
   def self.message(pipeline)
+    commit = pipeline['vcs']
+    commit = commit['commit'] if commit
+    commit = commit['subject'] if commit
+
     [
       {
         "type": "header",
@@ -43,7 +48,7 @@ class StartGameScript
         "type": "section",
         "text": {
           "type": "mrkdwn",
-          "text": "*Commit:* #{pipeline['vcs']['commit']['subject']}\n*Branch:* #{pipeline['vcs']['branch']}\n*By:* #{pipeline['trigger']['actor']['login']}\n*Started at:* #{pipeline['trigger']['received_at']}\n"
+          "text": "*Commit:* #{commit}\n*Branch:* #{pipeline['vcs']['branch']}\n*By:* #{pipeline['trigger']['actor']['login']}\n*Started at:* #{pipeline['trigger']['received_at']}\n"
         },
         "accessory": {
           "type": "image",
