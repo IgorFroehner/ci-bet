@@ -7,9 +7,10 @@ class Game
   field :entries, type: Array, default: []
   field :total_amount, type: Integer, default: 0
 
-  def add_entry(user_id, bet, amount)
+  def add_entry(user_id, user_name, bet, amount)
     self.entries << {
       "user_id": user_id,
+      "user_name": user_name,
       "bet": bet,
       "amount": amount
     }
