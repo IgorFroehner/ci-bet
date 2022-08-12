@@ -62,7 +62,7 @@ class StartGameScript
         "text": {
           "type": "mrkdwn",
           "text": "*Bets:* :white_check_mark:   0    :x:   0
-*Ods*:  :white_check_mark: 1.0    :x:   1.0"
+*Odds*: :white_check_mark: 1.0    :x:   1.0"
         }
       }, {
         "type": "divider"
