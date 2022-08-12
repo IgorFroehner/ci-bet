@@ -1,3 +1,4 @@
 web: rails server -p 5000
 startGame: rails runner app/scripts/start_game_script.rb
 endGame: rails runner app/scripts/end_game_script.rb
+updateGame: rails runner app/scripts/update_game_script.rb

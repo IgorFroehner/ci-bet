@@ -46,9 +46,9 @@ class EndGameScript
             blocks: change_blocks(parts)
           )
         end
+      else
+        game.cancel_game
       end
-
-      game.update(active: false)
 
       Rails.logger.info("EndGameJob: pipeline #{pipeline}")
     end
@@ -56,6 +56,10 @@ class EndGameScript
 
   class << self
     def message(pipeline, status)
+      commit = pipeline['vcs']
+      commit = commit['commit'] if commit
+      commit = commit['subject'] if commit
+
       [
         {
           "type": "header",
@@ -68,7 +72,7 @@ class EndGameScript
           "type": "section",
           "text": {
             "type": "mrkdwn",
-            "text": "*Commit:* #{pipeline['vcs']['commit']['subject']}\n*By:* #{pipeline['trigger']['actor']['login']}\n*Status:* #{status} :money-money:\n"
+            "text": "*Commit:* #{commit}\n*By:* #{pipeline['trigger']['actor']['login']}\n*Status:* #{status} :money-money:\n"
           },
           "accessory": {
             "type": "image",
@@ -87,7 +91,7 @@ class EndGameScript
       ]
     end
 
-    def self.money_emoji
+    def money_emoji
       %w[:burning-money: :flying_money_with_wings: :rocket_intensifies: :catjam:].sample
     end
 
