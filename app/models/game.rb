@@ -20,18 +20,22 @@ class Game
   end
 
   def end_game(status)
+    losers = entries.filter { |entry| status ? entry['bet'] == 'F' : entry['bet'] == 'S' }
+    losers = losers.map { |entry| [entry, -entry['amount']] }
+
     winners = entries.filter { |entry| status ? entry['bet'] == 'S' : entry['bet'] == 'F' }
     winner_pool = winners.pluck(:amount).sum
 
     winners = winners.map do |entry|
       user = User.find_by(user_id: entry['user_id'])
       final_balance = total_amount * (1.0 * entry['amount'] / winner_pool)
+      final_balance = final_balance.to_i
       user.credit_balance(final_balance)
       [entry, final_balance]
     end
 
     self.save
-    winners
+    winners.concat(losers).sort_by { |_, balance | balance }.reverse
   end
 
   def self.any_game_active?
