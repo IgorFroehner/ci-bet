@@ -12,7 +12,8 @@ class PipelineService
 
     def get_latest
       get_all['items']
-        .select { |pipeline| pipeline['status'] == 'running' }
+        .first(5)
+        .select { |pipeline| get_status(pipeline['id']) == 'running' }
         .first
     end
 
