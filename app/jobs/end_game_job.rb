@@ -22,14 +22,16 @@ class EndGameJob < ActiveJob::Base
     )
 
     if status == 'success' || status == 'failed'
-      winners = game.end_game(status == 'success')
-      text = winners.map { |entry, balance| "#{entry['user_name']} +#{balance}#{balance >= 10000 ? " #{money_emoji}" : ''}" }.join('\n')
+      entries = game.end_game(status == 'success')
+      parts = entries
+                .map { |entry, balance| change_parts(entry, balance) }
+                .flatten
 
-      unless text.blank?
+      unless parts.blank?
         slack_client.chat_postMessage(
           channel: ENV['CHANNEL_ID'],
           thread_ts: message_result['ts'],
-          text: text
+          blocks: change_blocks(parts)
         )
       end
     end
@@ -97,5 +99,23 @@ class EndGameJob < ActiveJob::Base
     else
       'https://cdn.iconscout.com/icon/free/png-256/circleci-283066.png'
     end
+  end
+
+  def change_parts(entry, amount)
+    name = entry['user_name'].split('.').map(&:capitalize).join(" ")
+    amount = "#{amount>0?'+':''}#{amount}#{amount >= 1000 ? " #{money_emoji}" : ''}"
+    [
+      {
+        "type": "mrkdwn",
+        "text": "*#{name}*: #{amount}",
+      },
+    ]
+  end
+
+  def change_blocks(parts)
+    [{
+       "type": "section",
+       "fields": parts
+    }]
   end
 end
