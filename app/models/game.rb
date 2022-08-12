@@ -6,6 +6,7 @@ class Game
   field :active, type: Boolean, default: true
   field :entries, type: Array, default: []
   field :total_amount, type: Integer, default: 0
+  field :message, type: Hash, default: {}
 
   def add_entry(user_id, user_name, bet, amount)
     self.entries << {
@@ -34,8 +35,20 @@ class Game
       [entry, final_balance]
     end
 
+    self.active = false
     self.save
+
     winners.concat(losers).sort_by { |_, balance | balance }.reverse
+  end
+
+  def cancel_game
+    entries.each do |entry|
+      user = User.find_by(user_id: entry['user_id'])
+      user.credit_balance(entry['amount'])
+    end
+
+    self.active = false
+    self.save
   end
 
   def self.any_game_active?

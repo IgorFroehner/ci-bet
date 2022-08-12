@@ -46,9 +46,9 @@ class EndGameScript
             blocks: change_blocks(parts)
           )
         end
+      else
+        game.cancel_game
       end
-
-      game.update(active: false)
 
       Rails.logger.info("EndGameJob: pipeline #{pipeline}")
     end
@@ -87,7 +87,7 @@ class EndGameScript
       ]
     end
 
-    def self.money_emoji
+    def money_emoji
       %w[:burning-money: :flying_money_with_wings: :rocket_intensifies: :catjam:].sample
     end
 

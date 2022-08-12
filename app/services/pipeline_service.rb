@@ -11,7 +11,9 @@ class PipelineService
     end
 
     def get_latest
-      get_all['items'].first
+      get_all['items']
+        .select { |pipeline| pipeline['status'] == 'running' }
+        .first
     end
 
     def get_by_id(pipeline_id)
