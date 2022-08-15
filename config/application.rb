@@ -42,7 +42,8 @@ module SlackRailsBotStarter
     # Skip views, helpers and assets when generating a new resource.
     config.api_only = true
     config.middleware.use Rack::ServerPages
-    
+
+    config.hosts << "ci-bet.herokuapp.com"
     config.hosts << /[a-z0-9-]+\.ngrok\.io/
     # Set the log level for mongoid so that it doesn't send trivial messages to stdout.
     config.mongoid.logger.level = Logger::INFO
