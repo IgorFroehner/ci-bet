@@ -68,7 +68,7 @@ class UpdateGameScript
         "text": {
           "type": "mrkdwn",
           "text": "*Bets:* :white_check_mark:   #{success_pool}    :x:   #{fail_pool}
-*Ods*:  :white_check_mark: #{success_odd}    :x:   #{fail_odd}"
+*Odds*: :white_check_mark: #{success_odd}    :x:   #{fail_odd}"
         }
       }, {
         "type": "divider"

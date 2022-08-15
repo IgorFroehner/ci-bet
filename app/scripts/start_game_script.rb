@@ -8,7 +8,7 @@ class StartGameScript
     while true
       if Game.any_game_active?
         logger.info("A game is already active, waiting for it to finish")
-        sleep(10)
+        sleep(30.minute)
         next
       end
 
@@ -27,7 +27,7 @@ class StartGameScript
 
       logger.info("StartGameJob: pipeline #{pipeline}")
 
-      sleep(10)
+      sleep(30.minute)
     end
   end
 
@@ -62,7 +62,7 @@ class StartGameScript
         "text": {
           "type": "mrkdwn",
           "text": "*Bets:* :white_check_mark:   0    :x:   0
-*Ods*:  :white_check_mark: 1.0    :x:   1.0"
+*Odds*: :white_check_mark: 1.0    :x:   1.0"
         }
       }, {
         "type": "divider"
